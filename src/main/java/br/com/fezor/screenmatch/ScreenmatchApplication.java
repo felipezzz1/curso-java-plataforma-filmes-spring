@@ -1,6 +1,7 @@
 package br.com.fezor.screenmatch;
 
 import br.com.fezor.screenmatch.models.EpisodeData;
+import br.com.fezor.screenmatch.models.SeasonData;
 import br.com.fezor.screenmatch.models.SeriesData;
 import br.com.fezor.screenmatch.services.DataConvert;
 import br.com.fezor.screenmatch.services.UseAPI;
@@ -8,6 +9,9 @@ import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
@@ -25,13 +29,21 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		var json = useAPI.getData("https://www.omdbapi.com/?t=prison+break&apikey=" + apiKey);
 
 		System.out.println(json);
-
 		DataConvert converter = new DataConvert();
+
 		SeriesData data = converter.getData(json, SeriesData.class);
 		System.out.println(data);
 
 		json = useAPI.getData("https://www.omdbapi.com/?t=prison+break&season=1&episode=1&apikey=" + apiKey);
 		EpisodeData episodeData = converter.getData(json, EpisodeData.class);
 		System.out.println(episodeData);
+
+		List<SeasonData> seasons = new ArrayList<>();
+		for (int i = 0; i < data.totalSeasons(); i++) {
+			json = useAPI.getData("https://www.omdbapi.com/?t=prison+break&season=" + i + "&apikey=" + apiKey);
+			SeasonData seasonData = converter.getData(json, SeasonData.class);
+			seasons.add(seasonData);
+		}
+		seasons.forEach(System.out::println);
 	}
 }
