@@ -1,5 +1,7 @@
 package br.com.fezor.screenmatch;
 
+import br.com.fezor.screenmatch.models.SeriesData;
+import br.com.fezor.screenmatch.services.DataConvert;
 import br.com.fezor.screenmatch.services.UseAPI;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.CommandLineRunner;
@@ -19,10 +21,12 @@ public class ScreenmatchApplication implements CommandLineRunner {
 		String apiKey = dotenv.get("API_KEY");
 
 		var useAPI = new UseAPI();
-		var json = useAPI.getData("https://www.omdbapi.com/?t=gilmore+girls&Season=1&apikey=" + apiKey);
+		var json = useAPI.getData("https://www.omdbapi.com/?t=prison+break&apikey=" + apiKey);
 
 		System.out.println(json);
 
-
+		DataConvert converter = new DataConvert();
+		SeriesData data = converter.getData(json, SeriesData.class);
+		System.out.println(data);
 	}
 }
