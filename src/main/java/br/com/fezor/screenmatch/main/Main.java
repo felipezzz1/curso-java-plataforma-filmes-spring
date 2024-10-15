@@ -1,5 +1,6 @@
 package br.com.fezor.screenmatch.main;
 
+import br.com.fezor.screenmatch.models.EpisodeData;
 import br.com.fezor.screenmatch.models.SeasonData;
 import br.com.fezor.screenmatch.models.SeriesData;
 import br.com.fezor.screenmatch.services.DataConvert;
@@ -41,5 +42,14 @@ public class Main {
 			seasons.add(seasonData);
 		}
 		seasons.forEach(System.out::println);
+
+//        for (int i = 0; i < data.totalSeasons(); i++) {
+//            List<EpisodeData> seasonEpisodes = seasons.get(i).episodes();
+//            for (EpisodeData seasonEpisode : seasonEpisodes) {
+//                System.out.println(seasonEpisode.title());
+//            }
+//        }
+
+        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
     }
 }
