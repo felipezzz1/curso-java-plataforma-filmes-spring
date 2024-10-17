@@ -8,6 +8,7 @@ import br.com.fezor.screenmatch.services.UseAPI;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,6 +51,18 @@ public class Main {
 //            }
 //        }
 
+//      lambda function
         seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+
+        // using streams to chain operations
+        List<String> names = Arrays.asList("Michael", "Lincoln", "Junior");
+
+//      here it is an example using the name list
+//      to concatenate the methods sorted, limit and filter
+        names.stream()
+                .sorted()
+                .limit(2)
+                .filter(n -> n.startsWith("M"))
+                .forEach(System.out::println);
     }
 }
