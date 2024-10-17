@@ -8,9 +8,10 @@ import br.com.fezor.screenmatch.services.UseAPI;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     private Scanner read = new Scanner(System.in);
@@ -44,25 +45,28 @@ public class Main {
 		}
 		seasons.forEach(System.out::println);
 
-//        for (int i = 0; i < data.totalSeasons(); i++) {
-//            List<EpisodeData> seasonEpisodes = seasons.get(i).episodes();
-//            for (EpisodeData seasonEpisode : seasonEpisodes) {
-//                System.out.println(seasonEpisode.title());
-//            }
-//        }
+        for (int i = 0; i < data.totalSeasons(); i++) {
+            List<EpisodeData> seasonEpisodes = seasons.get(i).episodes();
+            for (EpisodeData seasonEpisode : seasonEpisodes) {
+                System.out.println(seasonEpisode.title());
+            }
+        }
 
 //      lambda function
         seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
 
-        // using streams to chain operations
-        List<String> names = Arrays.asList("Michael", "Lincoln", "Junior");
+//      Here if you don't want to modify the
+//      List you can use .toList() instead of the
+//      .collect(Collectors.toList())
+        List<EpisodeData> episodes = seasons.stream()
+                .flatMap(t->t.episodes().stream())
+                .collect(Collectors.toList());
 
-//      here it is an example using the name list
-//      to concatenate the methods sorted, limit and filter
-        names.stream()
-                .sorted()
-                .limit(2)
-                .filter(n -> n.startsWith("M"))
+        System.out.println("Top 5 episodes: ");
+        episodes.stream()
+                .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(EpisodeData::rating).reversed())
+                .limit(5)
                 .forEach(System.out::println);
     }
 }
