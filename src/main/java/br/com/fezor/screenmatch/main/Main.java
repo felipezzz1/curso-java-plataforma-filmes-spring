@@ -7,7 +7,10 @@ import br.com.fezor.screenmatch.models.SeriesData;
 import br.com.fezor.screenmatch.services.DataConvert;
 import br.com.fezor.screenmatch.services.UseAPI;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -76,5 +79,24 @@ public class Main {
                 ).collect(Collectors.toList());
 
         episodes.forEach(System.out::println);
+
+        System.out.println("From each year do you want to list the episodes? ");
+        var year  = read.nextInt();
+        read.nextLine();
+
+        LocalDate searchData = LocalDate.of(year, 1, 1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        episodes.stream()
+                .filter(e -> e.getReleaseDate()!= null && e.getReleaseDate().isAfter(searchData))
+                .forEach(e-> System.out.println(
+                        "Season" + e.getSeason() +
+                                "Episode" + e.getTitle() +
+                                "ReleaseDate" + e.getReleaseDate().format(formatter)
+                ));
+
+
+
     }
 }
