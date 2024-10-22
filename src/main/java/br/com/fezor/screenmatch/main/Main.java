@@ -82,22 +82,22 @@ public class Main {
 
         episodes.forEach(System.out::println);
 
-        System.out.println("Please type the episode title excerpt: ");
-        var titleExcerpt = read.nextLine();
-
-        Optional<Episode> searchEpisode = episodes.stream()
-                .filter(e -> e.getTitle().toLowerCase().contains(titleExcerpt.toLowerCase()))
-                .findFirst();
-
-        if(searchEpisode.isPresent()){
-            System.out.println("Episode found!");
-            System.out.println("Episode title: " + searchEpisode.get().getTitle());
-            System.out.println("Season: " + searchEpisode.get().getSeason());
-            System.out.println("Episode number: " + searchEpisode.get().getNumber());
-        }else{
-            System.out.println("Episode not found!");
-        }
+//        System.out.println("Please type the episode title excerpt: ");
+//        var titleExcerpt = read.nextLine();
 //
+//        Optional<Episode> searchEpisode = episodes.stream()
+//                .filter(e -> e.getTitle().toLowerCase().contains(titleExcerpt.toLowerCase()))
+//                .findFirst();
+//
+//        if(searchEpisode.isPresent()){
+//            System.out.println("Episode found!");
+//            System.out.println("Episode title: " + searchEpisode.get().getTitle());
+//            System.out.println("Season: " + searchEpisode.get().getSeason());
+//            System.out.println("Episode number: " + searchEpisode.get().getNumber());
+//        }else{
+//            System.out.println("Episode not found!");
+//        }
+
 //        System.out.println("From each year do you want to list the episodes? ");
 //        var year  = read.nextInt();
 //        read.nextLine();
@@ -113,5 +113,12 @@ public class Main {
 //                                "Episode" + e.getTitle() +
 //                                "ReleaseDate" + e.getReleaseDate().format(formatter)
 //                ));
+
+        Map<Integer, Double> ratingBySeason = episodes.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.groupingBy(Episode::getSeason,
+                        Collectors.averagingDouble(Episode::getRating)));
+
+        System.out.println(ratingBySeason);
     }
 }
