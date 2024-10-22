@@ -1,5 +1,6 @@
 package br.com.fezor.screenmatch.main;
 
+import br.com.fezor.screenmatch.models.Episode;
 import br.com.fezor.screenmatch.models.EpisodeData;
 import br.com.fezor.screenmatch.models.SeasonData;
 import br.com.fezor.screenmatch.models.SeriesData;
@@ -58,15 +59,22 @@ public class Main {
 //      Here if you don't want to modify the
 //      List you can use .toList() instead of the
 //      .collect(Collectors.toList())
-        List<EpisodeData> episodes = seasons.stream()
+        List<EpisodeData> episodesData = seasons.stream()
                 .flatMap(t->t.episodes().stream())
                 .collect(Collectors.toList());
 
         System.out.println("Top 5 episodes: ");
-        episodes.stream()
+        episodesData.stream()
                 .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
                 .sorted(Comparator.comparing(EpisodeData::rating).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episode> episodes = seasons.stream()
+                .flatMap(t -> t.episodes().stream()
+                        .map(d -> new Episode(t.number(), d))
+                ).collect(Collectors.toList());
+
+        episodes.forEach(System.out::println);
     }
 }
