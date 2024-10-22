@@ -66,37 +66,39 @@ public class Main {
                 .flatMap(t->t.episodes().stream())
                 .collect(Collectors.toList());
 
-        System.out.println("Top 5 episodes: ");
+        System.out.println("Top 10 episodes: ");
         episodesData.stream()
                 .filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+                .peek(e-> System.out.println("First Filter(N/A)" + e))
                 .sorted(Comparator.comparing(EpisodeData::rating).reversed())
-                .limit(5)
+                .peek(e-> System.out.println("Ordination" + e))
+                .limit(10)
+                .peek(e-> System.out.println("Limit" + e))
+                .map(e -> e.title().toUpperCase())
+                .peek(e-> System.out.println("Map" + e))
                 .forEach(System.out::println);
 
-        List<Episode> episodes = seasons.stream()
-                .flatMap(t -> t.episodes().stream()
-                        .map(d -> new Episode(t.number(), d))
-                ).collect(Collectors.toList());
-
-        episodes.forEach(System.out::println);
-
-        System.out.println("From each year do you want to list the episodes? ");
-        var year  = read.nextInt();
-        read.nextLine();
-
-        LocalDate searchData = LocalDate.of(year, 1, 1);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        episodes.stream()
-                .filter(e -> e.getReleaseDate()!= null && e.getReleaseDate().isAfter(searchData))
-                .forEach(e-> System.out.println(
-                        "Season" + e.getSeason() +
-                                "Episode" + e.getTitle() +
-                                "ReleaseDate" + e.getReleaseDate().format(formatter)
-                ));
-
-
-
+//        List<Episode> episodes = seasons.stream()
+//                .flatMap(t -> t.episodes().stream()
+//                        .map(d -> new Episode(t.number(), d))
+//                ).collect(Collectors.toList());
+//
+//        episodes.forEach(System.out::println);
+//
+//        System.out.println("From each year do you want to list the episodes? ");
+//        var year  = read.nextInt();
+//        read.nextLine();
+//
+//        LocalDate searchData = LocalDate.of(year, 1, 1);
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//
+//        episodes.stream()
+//                .filter(e -> e.getReleaseDate()!= null && e.getReleaseDate().isAfter(searchData))
+//                .forEach(e-> System.out.println(
+//                        "Season" + e.getSeason() +
+//                                "Episode" + e.getTitle() +
+//                                "ReleaseDate" + e.getReleaseDate().format(formatter)
+//                ));
     }
 }
