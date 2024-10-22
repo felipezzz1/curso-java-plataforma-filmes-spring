@@ -120,5 +120,14 @@ public class Main {
                         Collectors.averagingDouble(Episode::getRating)));
 
         System.out.println(ratingBySeason);
+
+        DoubleSummaryStatistics statistics = episodes.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.summarizingDouble(Episode::getRating));
+
+        System.out.println("Average: " + statistics.getAverage()
+                + "\nBest Episode: " + statistics.getMax()
+                + "\nWorst Episode: " + statistics.getMin()
+                + "\nNumber of Episodes: " + statistics.getCount());
     }
 }
