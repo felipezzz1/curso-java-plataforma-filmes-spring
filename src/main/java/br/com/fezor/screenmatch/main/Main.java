@@ -23,34 +23,44 @@ public class Main {
     Dotenv dotenv = Dotenv.load();
     private final String apiKey = dotenv.get("API_KEY");
 
+    private List<SeriesData> seriesData = new ArrayList<>();
+
     public void showMenu(){
-        var menu = """
+        var option = -1;
+        while(option != 0){
+            var menu = """
                 1 - Search Series
                 2 - Search Episodes
-                
+                3 - List Searched Series
                 0 - Exit
                 """;
 
-        System.out.println(menu);
-        var option = read.nextInt();
-        read.nextLine();
+            System.out.println(menu);
+            option = read.nextInt();
+            read.nextLine();
 
-        switch (option){
-            case 1:
-                searchSerieWeb();
-                break;
-            case 2:
-                searchEpisodeBySerie();
-                break;
-            case 0:
-                System.out.println("Exiting...");
-            default:
-                System.out.println("Invalid Option");
+            switch (option){
+                case 1:
+                    searchSerieWeb();
+                    break;
+                case 2:
+                    searchEpisodeBySerie();
+                    break;
+                case 3:
+                    listSearchedSeries();
+                    break;
+                case 0:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid Option");
+            }
         }
     }
 
     private void searchSerieWeb(){
         SeriesData data = getSeriesData();
+        seriesData.add(data);
         System.out.println(data);
     }
 
@@ -71,5 +81,9 @@ public class Main {
             seasons.add(seasonData);
         }
         seasons.forEach(System.out::println);
+    }
+
+    private void listSearchedSeries(){
+        seriesData.forEach(System.out::println);
     }
 }
