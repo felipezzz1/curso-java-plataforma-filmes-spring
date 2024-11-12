@@ -1,9 +1,6 @@
 package br.com.fezor.screenmatch.main;
 
-import br.com.fezor.screenmatch.models.Episode;
-import br.com.fezor.screenmatch.models.EpisodeData;
-import br.com.fezor.screenmatch.models.SeasonData;
-import br.com.fezor.screenmatch.models.SeriesData;
+import br.com.fezor.screenmatch.models.*;
 import br.com.fezor.screenmatch.services.DataConvert;
 import br.com.fezor.screenmatch.services.UseAPI;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -84,6 +81,14 @@ public class Main {
     }
 
     private void listSearchedSeries(){
-        seriesData.forEach(System.out::println);
+        List<Series> series = new ArrayList<>();
+
+        series = seriesData.stream()
+                        .map(Series::new)
+                        .collect(Collectors.toList());
+
+        series.stream()
+                .sorted(Comparator.comparing(Series::getGenre))
+                .forEach(System.out::println);
     }
 }
